@@ -34,7 +34,7 @@
 <script lang='ts'>
 
 import { computed, getCurrentInstance, onMounted,defineComponent } from 'vue'
-import { HappyKitFramework, NavCloseType, HappyKitRouter, HappyKitSecurity } from 'happykit'
+import { HappyKitFramework, NavCloseType, HappyKitRouter, HappyKitSecurity } from '../../../../src/index'
 import { Router } from 'vue-router'
 
 export default defineComponent({

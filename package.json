@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "description": "happykit next refactor width rollup",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --watch './**/*.ts' --exec 'ts-node' examples/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --watch './**/*.ts'",
     "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "test": "jest --coverage",
     "format": "prettier --write src/**/*.ts",

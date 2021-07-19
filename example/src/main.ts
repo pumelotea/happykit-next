@@ -7,7 +7,7 @@ import {errorHandler,warnHandler} from '@/common/handlers'
 import eventBus from '@/common/eventBus'
 // 导入框架实例
 import happyFramework from '@/framework'
-import { createHappySecurity } from 'happykit'
+import { createHappySecurity } from '../../src/index'
 
 const happySecurity = createHappySecurity()
 
