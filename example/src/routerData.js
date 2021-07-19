@@ -1,68 +1,88 @@
 const routerData = [
   {
-    name: '看板',
-    path: '/dashboard',
-    view: '/dashboard',
+    name: '介绍',
+    path: '/desc',
+    view: '/desc/index.vue',
     isRouter: true,
     isKeepalive: true,
-    type: 'menu',
-    children: [
-      {
-        name: '重置',
-        permissionKey: 'reset',
-        path: '',
-        view: '',
-        isRouter: false,
-        isKeepalive: false,
-        type: 'point',
-        children: []
-      },
-      {
-        name: '新增',
-        permissionKey: 'add',
-        path: '',
-        view: '',
-        isRouter: false,
-        isKeepalive: false,
-        type: 'point',
-        children: []
-      },
-      {
-        name: '编辑',
-        permissionKey: 'edit',
-        path: '',
-        view: '',
-        isRouter: false,
-        isKeepalive: false,
-        type: 'point',
-        children: []
-      }
-      // {
-      //   name: '编辑弹出框取消',
-      //   permissionKey: 'cancel',
-      //   path: '',
-      //   view: '',
-      //   isRouter: false,
-      //   isKeepalive: false,
-      //   type: 'point',
-      //   children: []
-      // }
-    ]
-  },
-  {
-    name: 'element ui',
-    path: '/element',
-    view: '/iframe',
-    isRouter: true,
-    isKeepalive: false,
-    externalLink: true, //外链
-    linkTarget: '_tab', //刷新自己
-    externalLinkAddress: 'https://element.eleme.cn/#/zh-CN/component/changelog',
     type: 'menu',
     children: []
   },
   {
-    name: 'Demo',
+    name: '数据',
+    path: '/data',
+    view: '',
+    isRouter: false,
+    isKeepalive: true,
+    type: 'menu',
+    children: [
+      {
+        name: '原始数据',
+        path: '/raw',
+        view: '/data-raw/index.vue',
+        isRouter: true,
+        isKeepalive: true,
+        type: 'menu',
+        children: []
+      },
+      {
+        name: '菜单数据',
+        path: '/menu',
+        view: '/data-menu/index.vue',
+        isRouter: true,
+        isKeepalive: true,
+        type: 'menu',
+        children: []
+      },
+      {
+        name: '导航数据',
+        path: '/nav',
+        view: '/data-nav/index.vue',
+        isRouter: true,
+        isKeepalive: true,
+        type: 'menu',
+        children: []
+      },
+      {
+        name: '面包屑数据',
+        path: '/breadcrumb',
+        view: '/data-breadcrumb/index.vue',
+        isRouter: true,
+        isKeepalive: true,
+        type: 'menu',
+        children: []
+      },
+    ]
+  },
+  {
+    name: '指纹',
+    path: '/fingerprint',
+    view: '/fingerprint/index.vue',
+    isRouter: true,
+    isKeepalive: true,
+    type: 'menu',
+    children: []
+  },
+  {
+    name: '权限',
+    path: '/permission',
+    view: '/permission/index.vue',
+    isRouter: true,
+    isKeepalive: true,
+    type: 'menu',
+    children: []
+  },
+  {
+    name: 'Security',
+    path: '/security',
+    view: '/security/index.vue',
+    isRouter: true,
+    isKeepalive: true,
+    type: 'menu',
+    children: []
+  },
+  {
+    name: '多层菜单',
     path: '/demo',
     view: '',
     isRouter: false,
@@ -70,7 +90,7 @@ const routerData = [
     type: 'menu',
     children: [
       {
-        name: '外部链接',
+        name: '1-1',
         path: '/links',
         view: '',
         isRouter: false,
@@ -78,7 +98,7 @@ const routerData = [
         type: 'menu',
         children: [
           {
-            name: '松鼠乐园外部1',
+            name: '1-1-1',
             path: '',
             view: '',
             isRouter: true,
@@ -90,7 +110,7 @@ const routerData = [
             children: []
           },
           {
-            name: '松鼠乐园外部2',
+            name: '1-1-2',
             path: '',
             view: '',
             isRouter: true,
@@ -102,7 +122,7 @@ const routerData = [
             children: []
           },
           {
-            name: '松鼠乐园内部',
+            name: '1-1-3',
             path: '/squirrelzoo',
             view: '/iframe',
             isRouter: true,
@@ -114,7 +134,7 @@ const routerData = [
             children: []
           },
           {
-            name: '百度内部',
+            name: '1-1-4',
             path: '/baidu',
             view: '/iframe',
             isRouter: true,
@@ -128,7 +148,7 @@ const routerData = [
         ]
       },
       {
-        name: '用户',
+        name: '1-2',
         path: '/user-mgt',
         view: '',
         isRouter: false,
@@ -136,7 +156,7 @@ const routerData = [
         type: 'menu',
         children: [
           {
-            name: '高级管理',
+            name: '2-1',
             path: '/adv',
             view: '',
             isRouter: false,
@@ -144,7 +164,7 @@ const routerData = [
             type: 'menu',
             children: [
               {
-                name: '高级111',
+                name: '2-1-1',
                 path: '/xxxxxx111',
                 view: '/role',
                 isRouter: true,
@@ -157,15 +177,15 @@ const routerData = [
         ]
       },
       {
-        name: '测试管理',
-        path: '', //TODO  这个路径要拼接进实际的路由 //如果父节点为空，那么就产生一个临时的
+        name: '1-3',
+        path: '',
         view: '',
         isRouter: false,
         isKeepalive: false,
         type: 'menu',
         children: [
           {
-            name: '测试项目组',
+            name: '3-1',
             path: '/test/aaa',
             view: '/role',
             isRouter: true,
@@ -178,7 +198,7 @@ const routerData = [
     ]
   },
   {
-    name: '系统管理',
+    name: '两层菜单',
     path: '/system',
     view: '',
     isRouter: false,
@@ -186,7 +206,7 @@ const routerData = [
     type: 'menu',
     children: [
       {
-        name: '用户管理',
+        name: '1-1',
         path: '/user',
         view: '/user',
         isRouter: true,
@@ -195,7 +215,7 @@ const routerData = [
         children: []
       },
       {
-        name: '角色管理',
+        name: '1-2',
         path: '/role',
         view: '/role',
         isRouter: true,
@@ -225,7 +245,7 @@ const routerData = [
         ]
       },
       {
-        name: '部门管理',
+        name: '1-3',
         path: '/department',
         view: '/department',
         isRouter: true,
@@ -245,7 +265,7 @@ const routerData = [
         ]
       },
       {
-        name: '区域管理',
+        name: '1-4',
         path: '/region',
         view: '/region',
         isRouter: true,
@@ -265,7 +285,7 @@ const routerData = [
         ]
       },
       {
-        name: '菜单管理',
+        name: '1-5',
         path: '/menu',
         view: '/menu',
         isRouter: true,
@@ -285,7 +305,7 @@ const routerData = [
         ]
       },
       {
-        name: '日志审计',
+        name: '1-6',
         path: '/log-report',
         view: '/log-report',
         isRouter: true,
@@ -294,15 +314,6 @@ const routerData = [
         children: []
       }
     ]
-  },
-  {
-    name: '字典管理',
-    path: '/dictionary',
-    view: '/dictionary',
-    isRouter: true,
-    isKeepalive: false,
-    type: 'menu',
-    children: []
   },
   {
     name: '隐藏路由1级',

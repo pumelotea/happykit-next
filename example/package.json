@@ -1,6 +1,6 @@
 {
-  "name": "happykit-vue3-example",
-  "version": "0.1.0",
+  "name": "happykit-playground",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev --dest=dist-dev",
@@ -12,13 +12,16 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "js-md5": "0.7.3",
     "mitt": "^2.1.0",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.0",
     "vue": "^3.1.2",
+    "element-plus": "^1.0.2-beta.54",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0-rc.1",
-    "js-md5": "0.7.3"
+    "happykit": "../happykit-2.0.1.tgz",
+    "highlight.js": "^10.1.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",

@@ -1,134 +1,282 @@
 <template>
-  <div>
-    <p v-for='e in routeMappingList' :key='e.menuId'>
-      <a @click='goto(e.menuId)'>{{ e.menuId }} - {{ e.name }} - {{ e.routerPath }}</a>
-    </p>
-    <p>面包屑</p>
-    <span>{{ breadcrumb }}</span>
-    <p>当前路由</p>
-    <div v-if='currentRouteMenu'>
-      【{{ currentRouteMenu.title }}】
+  <div class="case-content">
+    <div class="page-content">
+      <hb-main-layout>
+        <template v-slot:head-bar>
+          <div class="head-bar">Happykit Playground</div>
+        </template>
+        <template v-slot:nav-bar>
+          <hb-nav-bar/>
+        </template>
+        <template v-slot:menu-list>
+          <hb-menu-list/>
+        </template>
+        <template v-slot:content>
+          <router-view/>
+        </template>
+      </hb-main-layout>
     </div>
-    <div>
-      <button @click="openNav('dash-1111')">open1</button>
-      <button @click="openNav('dash-2222')">open2</button>
-      <button @click="openNav('dash-3333')">open3</button>
-    </div>
-    <button @click='closeNav(0)'>关闭全部</button>
-    <button @click='closeNav(1)'>关闭左侧</button>
-    <button @click='closeNav(2)'>关闭右侧</button>
-    <button @click='closeNav(3)'>关闭其他</button>
-    <div v-for='e in navList' :key='e.pageId'>
-      <button @click='closeNav(4,e.pageId)'>CLOSE</button>
-      <a :style="currentRouteMenu?.pageId===e.pageId?'color:red':''" @click='navClick(e.pageId)'>{{ e.title }}</a>
-    </div>
-    <div>
-      user：{{ user }}
-    </div>
-    <div style='height: 500px;width: 400px;background: antiquewhite'>
-      <router-view />
+    <div class="dev-form">
+      <div class="group-item">
+        <div class="group-name">初始化</div>
+        <div>
+          <el-button @click="loadData">加载数据</el-button>
+          <el-button>查看数据源</el-button>
+          <el-button @click="reset">重置框架</el-button>
+        </div>
+      </div>
+      <div class="group-item">
+        <div class="group-name">导航栏</div>
+        <div class="nav-c-box">
+          <div>
+            <el-button @click="closeTabs(3)">关闭导航栏-全部</el-button>
+          </div>
+          <div>
+            <el-button @click="closeTabs(0)">关闭导航栏-左侧</el-button>
+          </div>
+          <div>
+            <el-button @click="closeTabs(1)">关闭导航栏-右侧</el-button>
+          </div>
+          <div>
+            <el-button @click="closeTabs(2)">关闭导航栏-其他</el-button>
+          </div>
+          <div>
+            <el-button @click="closeTabs(4)">关闭导航栏-当前路由</el-button>
+          </div>
+          <div>
+            <el-button>跳转页面-普通</el-button>
+          </div>
+          <div>
+            <el-button>跳转页面-自定义标题</el-button>
+          </div>
+          <div>
+            <el-button>获取导航栏数据</el-button>
+          </div>
+          <div>
+            <el-button>获取面包屑</el-button>
+          </div>
+        </div>
+      </div>
+      <div class="group-item">
+        <div class="group-name">菜单</div>
+        <div class="nav-c-box">
+          <div>
+            <el-button>获取菜单数据</el-button>
+          </div>
+          <div>
+            <el-button>菜单点击事件</el-button>
+          </div>
+          <div>
+            <el-button>隐藏菜单（路由）</el-button>
+          </div>
+        </div>
+      </div>
+      <div class="group-item">
+        <div class="group-name">权限指令</div>
+        <div class="nav-c-box">
+          <div>
+            <el-button>按钮权限</el-button>
+          </div>
+        </div>
+      </div>
+      <div class="group-item">
+        <div class="group-name">指纹</div>
+        <div class="nav-c-box">
+          <div>
+            <el-button>获取浏览器指纹（canvas）</el-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="group-item">
+        <div class="group-name">Security模块</div>
+        <div class="nav-c-box">
+          <div>
+            <el-button @click="login">登录</el-button>
+          </div>
+          <div>
+            <el-button @click="logout">登出</el-button>
+          </div>
+          <div>
+            <el-button @click="refreshToken">刷新token</el-button>
+          </div>
+          <div>
+            <el-button @click="getToken">获取token</el-button>
+          </div>
+          <div>
+            <el-button @click="refreshUser">刷新用户信息</el-button>
+          </div>
+          <div>
+            <el-button @click="getUserInfo">获取用户信息</el-button>
+          </div>
+          <div>
+            <el-button @click="flushStorage">清空模块存储</el-button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
+<script lang="ts">
+import HbMainLayout from "../../components/HbMainLayout.vue"
+import HbNavBar from "../../components/HbNavBar.vue"
+import HbMenuList from "../../components/HbMenuList.vue"
+import {defineComponent} from "vue"
+import $happykit from '@/framework'
+import {useRouter} from "vue-router"
+import {injectRoutes, createDefaultMenuAdapter, resetFramework, upgradeRouter,RouterInjectOption} from "happykit"
 
-<script lang='ts'>
-
-import { computed, getCurrentInstance, onMounted,defineComponent } from 'vue'
-import { HappyKitFramework, NavCloseType, HappyKitRouter, HappyKitSecurity } from '../../../../src/index'
-import { Router } from 'vue-router'
+// @ts-ignore
+import routerData from '../../routerData'
+import happySecurity from "@/security";
 
 export default defineComponent({
+  components: {HbMainLayout, HbNavBar, HbMenuList},
   setup() {
-    const self = getCurrentInstance()
-    const ctx = self?.appContext.config.globalProperties!
-    const instance = ctx.$happykit as HappyKitFramework
+    const router = useRouter()
+    const dataAdapter = createDefaultMenuAdapter()
 
-    const security = ctx.$security as HappyKitSecurity
-    security.signIn('token', {
-      username: 'username',
-      image: 'image',
-    })
-
-    const user = security.getUser()
-
-    const menuTree = instance.getMenuTree()
-    const routeMappingList = instance.getRouteMappingList()
-    const currentRouteMenu = instance.getCurrentMenuRoute()
-    const navList = instance.getNavList()
-
-    const breadcrumb = computed(() => {
-      return currentRouteMenu.value?.menuItem.breadcrumb.map((e: any) => e.name).join('/')
-    })
-
-    const router = ctx.$router as Router
-
-    const goto = (menuId: string) => {
-      instance.clickMenuItem(menuId, (menuItems: any) => {
-        // console.log('需要跳转1', menuItems)
-        router.push(menuItems[0].routerPath)
-      })
+    function loadData() {
+      $happykit.setMenuTree(routerData, dataAdapter)
+      const routerInjectOption:RouterInjectOption = {
+        router,
+        parentRoute: {
+          name: 'home',
+          path: '/home',
+          component: () => import('@/views/home'!)
+        },
+        routes: $happykit.getRouteMappingList().value,
+        viewLoader(view) {
+          //@ts-ignore
+          return () => import(`@/views${view}`)
+        }
+      }
+      injectRoutes(routerInjectOption)
+      upgradeRouter($happykit,router)
     }
 
-    const tp: any = ['all', 'left', 'right', 'other', 'self']
-    const closeNav = (type: number, pageId?: string) => {
-      instance.closeNav(tp[type], pageId, (removedNavs: any, needNavs: any) => {
-        console.log('已经移除1', removedNavs)
-        console.log('需要跳转3', needNavs)
-        // console.log('更新后的NavList', navList.value)
+    function reset() {
+      resetFramework($happykit)
+    }
+
+    const navList = $happykit.getNavList()
+    const currentRouteMenu = $happykit.getCurrentMenuRoute()
+    const closeTabs = (type: number) => {
+      const tp: any = ['left', 'right', 'other', 'all', 'self']
+      $happykit.closeNav(tp[type], currentRouteMenu.value?.pageId, (removedNavs: any, needNavs: any) => {
         if (needNavs.length > 0) {
           router.push(needNavs[0].to)
-        } else {
-          if (navList.value.length === 0) {
-            router.push('/')
-          }
+        }
+        if (navList.value.length === 0) {
+          router.push('/')
         }
       })
     }
 
-    const navClick = (pageId: string) => {
-      instance.clickNavItem(pageId, (a: any, needNavs: any) => {
-        // console.log('需要跳转2', needNavs)
-        if (needNavs.length > 0) {
-          router.push(needNavs[0].to)
-        }
+    function login(){
+      happySecurity.signIn('token-'+Date.now(),{
+        name:'张三',
+        email:'zs@qq.com',
+        avatar:'link'
       })
     }
 
-    const openNav = (title: string) => {
-      (router as HappyKitRouter).push('/dashboard?id=1&title=' + title, title)
+    function logout(){
+      happySecurity.signOut()
     }
 
-    onMounted(() => {
-      setInterval(() => {
-        user.value.time = new Date().getTime()
-      }, 1000)
-    })
+    function refreshToken(){
+      happySecurity.refreshToken('token-'+Date.now())
+    }
+
+    function getToken(){
+      alert(happySecurity.getToken())
+    }
+
+    function refreshUser(){
+      happySecurity.refreshUser({
+        name:'小米',
+        email:'xm@qq.com',
+        avatar:'link2'
+      })
+    }
+
+    function getUserInfo(){
+      alert(JSON.stringify(happySecurity.getUser().value))
+    }
+
+    function flushStorage(){
+      happySecurity.flushStorage()
+    }
 
     return {
-      menuTree,
-      navList,
-      routeMappingList,
-      currentRouteMenu,
-      breadcrumb,
-      user,
-      goto,
-      closeNav,
-      navClick,
-      openNav,
+      loadData,
+      reset,
+      closeTabs,
+      login,
+      logout,
+      refreshToken,
+      getToken,
+      refreshUser,
+      getUserInfo,
+      flushStorage
     }
-  },
+  }
 })
 </script>
 <style>
-p {
-  margin: 0;
+.case-content {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  display: flex;
 }
 
-a {
-  cursor: pointer;
+.head-bar {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  background-color: rgb(31 200 219);
+  background-image: linear-gradient(72deg, rgb(33 245 88 / 30%) 0%, rgb(110 205 216 / 40%) 51%, rgb(85 184 255) 75%);
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
 }
 
-a:hover {
-  color: blue;
+.page-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  padding: 20px;
+  background: #F1F1F5;
 }
+
+.dev-form {
+  width: 500px;
+  overflow: auto;
+  background: #f1f1f6;
+}
+
+.group-item {
+  padding: 10px;
+}
+
+.group-name {
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.nav-c-box {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+
 </style>

@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory, NavigationFailure, RouteLocationRaw
 import routes from '@/router/config'
 import { beforeEachHandler, afterEachHandler } from '@/router/config'
 import happyFramework from '@/framework'
-import { upgradeRouter } from '../../../src/index'
+import { upgradeRouter } from 'happykit'
 
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.

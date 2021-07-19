@@ -1,5 +1,5 @@
 // 创建框架实例
-import { createHappyFramework } from '../../../src/index'
+import { createHappyFramework } from 'happykit'
 
 const happyFramework = createHappyFramework()
 

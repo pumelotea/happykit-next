@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
-import { createDefaultRouterInterceptor } from '../../../src/index'
+import { createDefaultRouterInterceptor } from 'happykit'
 
 // 导入框架实例
 import happyFramework from '@/framework'
@@ -33,10 +33,6 @@ const beforeInterceptor = createDefaultRouterInterceptor({
     }
   }
 })
-const afterInterceptor = createDefaultRouterInterceptor({
-  interceptorType: 'after',
-  framework:happyFramework
-})
 
 const routes: RouteRecordRaw[] = [
   {
@@ -49,7 +45,8 @@ const routes: RouteRecordRaw[] = [
 
 export const beforeEachHandler = (to: any, from: any, next: any) => {
   // 使用拦截器
-  beforeInterceptor.filter(to,from,next)
+  // beforeInterceptor.filter(to,from,next)
+  next()
 }
 
 // eslint-disable-next-line no-unused-vars
