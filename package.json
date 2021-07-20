@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "description": "happykit next refactor width rollup",
   "scripts": {
+    "dev": "cross-env NODE_ENV=development rollup --config rollup.dev.config.js --watch",
     "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "test": "jest --coverage",
     "format": "prettier --write src/**/*.ts",
