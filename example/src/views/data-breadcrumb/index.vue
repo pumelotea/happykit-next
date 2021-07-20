@@ -1,8 +1,9 @@
 <template>
-  <div class="data-code" v-highlight>
+  <div class="data-code">
     <h2>面包屑数据</h2>
     <pre>$happykit.getBreadcrumb()</pre>
-    <pre>{{data}}</pre>
+    <h3>结果</h3>
+    <el-button @click="out">在控制台输出</el-button>
   </div>
 </template>
 
@@ -13,8 +14,13 @@ import {defineComponent} from "vue"
 export default defineComponent({
   setup(){
     const data = $happykit.getBreadcrumb()
+
+    function out(){
+      console.log(data)
+    }
+
     return {
-      data
+      out
     }
   }
 })

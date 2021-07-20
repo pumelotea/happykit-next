@@ -1,10 +1,10 @@
 <template>
-  <div class="data-code" v-highlight>
+  <div class="data-code">
     <h2>菜单数据</h2>
     <h3>调用</h3>
     <pre>$happykit.getMenuTree()</pre>
     <h3>结果</h3>
-<!--    <pre>{{list}}</pre>-->
+    <el-button @click="out">在控制台输出</el-button>
   </div>
 </template>
 
@@ -16,8 +16,11 @@ export default defineComponent({
   setup(){
     const list = $happykit.getMenuTree()
 
+    function out(){
+      console.log(list)
+    }
     return {
-      list
+      out
     }
   }
 })

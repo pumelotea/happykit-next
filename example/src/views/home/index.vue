@@ -12,7 +12,16 @@
           <hb-menu-list/>
         </template>
         <template v-slot:content>
-          <router-view/>
+          <router-view v-slot="{ Component }">
+            <transition name="slide-fade">
+              <component
+                v-if="pageId"
+                :is="Component"
+                :pageId="pageId"
+                :isKeepalive="isKeepalive"
+                :key="pageId"></component>
+            </transition>
+          </router-view>
         </template>
       </hb-main-layout>
     </div>
@@ -121,7 +130,7 @@
 import HbMainLayout from "../../components/HbMainLayout.vue"
 import HbNavBar from "../../components/HbNavBar.vue"
 import HbMenuList from "../../components/HbMenuList.vue"
-import {defineComponent} from "vue"
+import {defineComponent, ref, watch} from "vue"
 import $happykit from '@/framework'
 import {useRouter} from "vue-router"
 import {injectRoutes, createDefaultMenuAdapter, resetFramework, upgradeRouter,RouterInjectOption} from "happykit"
@@ -133,8 +142,19 @@ import happySecurity from "@/security";
 export default defineComponent({
   components: {HbMainLayout, HbNavBar, HbMenuList},
   setup() {
+    const pageId = ref('')
+    const isKeepalive = ref(false)
     const router = useRouter()
     const dataAdapter = createDefaultMenuAdapter()
+
+    const update = () => {
+      pageId.value = $happykit.getCurrentMenuRoute().value?.pageId || ''
+      isKeepalive.value = $happykit.getCurrentMenuRoute().value?.menuItem.isKeepalive || false
+    }
+
+    watch(router.currentRoute, () => {
+      update()
+    })
 
     function loadData() {
       $happykit.setMenuTree(routerData, dataAdapter)
@@ -143,7 +163,7 @@ export default defineComponent({
         parentRoute: {
           name: 'home',
           path: '/home',
-          component: () => import('@/views/home'!)
+          component: () => import('@/views/parent'!)
         },
         routes: $happykit.getRouteMappingList().value,
         viewLoader(view) {
@@ -219,7 +239,9 @@ export default defineComponent({
       getToken,
       refreshUser,
       getUserInfo,
-      flushStorage
+      flushStorage,
+      pageId,
+      isKeepalive
     }
   }
 })

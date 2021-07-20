@@ -9,7 +9,7 @@
         @edit="handleTabsEdit"
         @tab-click="goto"
       >
-        <template v-for="item in navList" :key="item.pageId">
+        <template v-for="item in navList">
           <el-tab-pane
             :name="item.pageId"
             :pageId="item.pageId"
@@ -65,7 +65,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch} from 'vue'
 import $happykit from '@/framework'
-import {useRouter} from "vue-router";
+import {useRouter} from "vue-router"
 
 export default defineComponent({
   name: 'HbNavBar',

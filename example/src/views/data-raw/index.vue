@@ -1,21 +1,23 @@
 <template>
-  <div class="data-code" v-highlight>
+  <div class="data-code">
     <h2>原始数据</h2>
     <p>这个数据大部分情况是从服务端的返回。</p>
-<!--    <pre>{{navList}}</pre>-->
+    <h3>结果</h3>
+    <el-button @click="out">在控制台输出</el-button>
   </div>
 </template>
 
 <script lang="ts">
-import $happykit from '@/framework'
 import {defineComponent} from "vue"
-
+//@ts-ignore
+import routerData from '../../routerData'
 export default defineComponent({
   setup(){
-    const navList = $happykit.getNavList()
-
+    function out(){
+      console.log(routerData)
+    }
     return {
-      navList
+      out
     }
   }
 })
