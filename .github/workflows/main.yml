@@ -12,12 +12,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: install
-        run: yarn install
-
-      - name: unit test
-        run: yarn test
-
       - name: yarn build:example
         run: yarn build:example
 
