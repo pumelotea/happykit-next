@@ -8,7 +8,8 @@
     "format": "prettier --write src/**/*.ts",
     "lint": "tslint -p tsconfig.json",
     "doc": "standard-version",
-    "release": "git push --follow-tags origin master && yarn publish"
+    "release": "git push --follow-tags origin master && yarn publish",
+    "build:example": "sh scripts/build-example.sh"
   },
   "main": "lib/happykit.cjs.js",
   "module": "lib/happykit.esm.js",

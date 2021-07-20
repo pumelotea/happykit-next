@@ -17,6 +17,7 @@
       "@/*": [
         "src/*"
       ],
+      "happykit": ["node_modules/happykit"],
       "webpack": ["node_modules/@vue"]
     },
     "lib": [
