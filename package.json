@@ -59,9 +59,6 @@
       "prettier --write src/**/*.ts"
     ]
   },
-  "dependencies": {
-    "js-md5": "0.7.3"
-  },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",

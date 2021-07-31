@@ -85,3 +85,29 @@ export function getCanvasFingerPrint(domain: string) {
   const bin = atob(b64)
   return bin2hex(bin.slice(-16, -12))
 }
+
+export function getHash(input: any) {
+  const I64BIT_TABLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'.split('')
+  let hash = 20210731
+  let i = input.length - 1
+
+  if (typeof input === 'string') {
+    for (; i > -1; i--) {
+      hash += (hash << 5) + input.charCodeAt(i)
+    }
+  } else {
+    for (; i > -1; i--) {
+      hash += (hash << 5) + input[i]
+    }
+  }
+  let value = hash & 0x7fffffff
+
+  let retValue = ''
+  do {
+    retValue += I64BIT_TABLE[value & 0x3f]
+    // @ts-ignore
+    value >>= 2
+  } while (value > 0)
+
+  return retValue
+}

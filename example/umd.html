@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<script src="https://unpkg.com/vue@3.1.5/dist/vue.global.js"></script>
+<script src="../lib/happykit.umd.js"></script>
+<script>
+  const frame = window.happykit.createHappyFramework()
+  console.log(frame)
+  const security = window.happykit.createHappySecurity()
+  security.signIn('token',{name:'jack'})
+  console.log(security)
+</script>
+</body>
+</html>

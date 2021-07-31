@@ -8,7 +8,8 @@
     "object-literal-sort-keys": false,
     "member-access": false,
     "ordered-imports": false,
-    "no-namespace": false
+    "no-namespace": false,
+    "no-bitwise": false
   },
   "linterOptions": {
     "exclude": [

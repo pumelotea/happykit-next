@@ -13,11 +13,8 @@ import {
   RouterInterceptorOption,
   TrackerIdFactory,
 } from '../types'
-import { deepClone, getCanvasFingerPrint, uuid } from '../utils'
+import { deepClone, getCanvasFingerPrint, uuid, getHash } from '../utils'
 import { NavigationFailure, RouteLocationRaw, Router } from 'vue-router'
-
-// tslint:disable-next-line:no-var-requires
-const md5: any = require('js-md5')
 
 /**
  * 工厂
@@ -166,6 +163,16 @@ export function sortObject(source: any) {
   return target
 }
 
+function strToHexCharCode(str: string) {
+  if (str === '') return ''
+  const hexCharCode: string[] = []
+  hexCharCode.push('0x')
+  for (let i = 0; i < str.length; i++) {
+    hexCharCode.push(str.charCodeAt(i).toString(16))
+  }
+  return hexCharCode.join('')
+}
+
 /**
  * 创建默认的页面ID生成工厂
  * @param framework 框架上下文
@@ -174,7 +181,8 @@ export function createDefaultPageIdFactory(framework: HappyKitFramework): PageId
   return {
     framework,
     generate(fullPath: string) {
-      return md5(fullPath)
+      console.log(getHash(strToHexCharCode(fullPath)))
+      return getHash(fullPath)
     },
     getNextPageId(to: RouteLocationRaw) {
       const router: Router = this.framework.options.app?.config.globalProperties.$router
@@ -204,7 +212,7 @@ export function createDefaultTrackerIdFactory(framework: HappyKitFramework): Tra
   return {
     framework,
     getId(): string {
-      return md5(getCanvasFingerPrint('happykit.org'))
+      return getHash(getCanvasFingerPrint('happykit.org'))
     },
   }
 }
