@@ -101,13 +101,10 @@ export function getHash(input: any) {
     }
   }
   let value = hash & 0x7fffffff
-
   let retValue = ''
   do {
     retValue += I64BIT_TABLE[value & 0x3f]
-    // @ts-ignore
     value >>= 2
   } while (value > 0)
-
   return retValue
 }
