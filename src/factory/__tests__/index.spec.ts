@@ -1,7 +1,7 @@
 import { createDefaultPageIdFactory, createDefaultTrackerIdFactory, createEmptyMenuItem } from '../index'
 import { MenuItem } from '../../types'
 import { createHappyFramework } from '../../framework'
-import { uuid } from '../../utils'
+import { getHash } from '../../utils'
 import { createApp, defineComponent } from 'vue'
 import { createRouter, createMemoryHistory } from 'vue-router'
 
@@ -33,12 +33,11 @@ test('createEmptyMenuItem', () => {
 
 test('defaultTrackerIdFactory', () => {
   const defaultTrackerIdFactory = createDefaultTrackerIdFactory(createHappyFramework())
-  expect(defaultTrackerIdFactory.getId().length).toBe(uuid().replace(/-/g, '').length)
+  expect(defaultTrackerIdFactory.getId().length).toBe(16)
 })
 
 test('defaultPageIdFactory', async () => {
   // 准备环境
-  const md5: any = require('js-md5')
   const app = createApp({
     template: '<div></div>',
   })
@@ -62,7 +61,7 @@ test('defaultPageIdFactory', async () => {
   const defaultPageIdFactory = createDefaultPageIdFactory(framework)
   const to = { path: '/path', query: { id: 1 } }
   // 测试id生成器是否达到预期
-  expect(defaultPageIdFactory.generate('/path')).toBe(md5('/path'))
+  expect(defaultPageIdFactory.generate('/path')).toBe(getHash('/path'))
 
   // 测试未装载框架到app是否会报错
   expect(() => {
@@ -86,5 +85,5 @@ test('defaultPageIdFactory', async () => {
     params: {},
   }
 
-  expect(md5(JSON.stringify(idObject))).toBe(defaultPageIdFactory.getNextPageId(to))
+  expect(getHash(JSON.stringify(idObject))).toBe(defaultPageIdFactory.getNextPageId(to))
 })
