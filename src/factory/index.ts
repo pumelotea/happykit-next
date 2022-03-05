@@ -181,7 +181,6 @@ export function createDefaultPageIdFactory(framework: HappyKitFramework): PageId
   return {
     framework,
     generate(fullPath: string) {
-      console.log(getHash(strToHexCharCode(fullPath)))
       return getHash(fullPath)
     },
     getNextPageId(to: RouteLocationRaw) {
