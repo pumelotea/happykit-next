@@ -11,10 +11,16 @@ import {
   RouterInjectOption,
   RouterInterceptor,
   RouterInterceptorOption,
-  TrackerIdFactory,
+  TrackerIdFactory, HappyKitRouteCache, HappyKitRouteCacheOption,
 } from '../types'
 import { deepClone, getCanvasFingerPrint, uuid, getHash } from '../utils'
-import { NavigationFailure, RouteLocationRaw, Router } from 'vue-router'
+import {
+  NavigationFailure,
+  RouteLocationNormalizedLoaded,
+  RouteLocationRaw,
+  Router,
+} from 'vue-router'
+import { reactive, ref, watch, h, markRaw, defineComponent, KeepAlive, toRaw, Component, DefineComponent } from 'vue'
 
 /**
  * 工厂
@@ -395,5 +401,109 @@ export function createDefaultRouterInterceptor(options: RouterInterceptorOption)
         console.warn('RouterInterceptor After: ', `${from.path} ---> ${to.path}`)
       },
     }
+  }
+}
+
+
+export function useRouteAlive(options: HappyKitRouteCacheOption) {
+  const framework = options.framework
+  const router = options.router
+  const placeHolderComponent = options.placeHolderComponent
+
+  const currentMenuRoute = framework.getCurrentMenuRoute()
+  // 缓存
+  const cached = reactive<HappyKitRouteCache>({})
+  const includes = ref<string[]>([])
+  // when tabs changed, calc the includes
+  watch(
+    () => cached,
+    () => {
+      // delay update, because of current component's onUnmounted callback
+      requestIdleCallback(() => {
+        const tmp: string[] = []
+        for (let cachedKey in cached) {
+          if (cached[cachedKey].isKeepalive) {
+            tmp.push(cachedKey)
+          }
+        }
+
+        includes.value = tmp
+      })
+    }, {
+      deep: true,
+    })
+
+  router.afterEach(to => {
+    if (!currentMenuRoute.value) {
+      return
+    }
+    const isKeepalive = to.meta.isKeepalive === true
+    const pageId = currentMenuRoute.value?.pageId
+    if (cached[pageId]) {
+      return
+    }
+    cached[pageId] = {
+      pageId,
+      isKeepalive,
+      component: null,
+    }
+  })
+
+  function reDefineComponent(component: Component, route: RouteLocationNormalizedLoaded) {
+    if (!component) {
+      return null
+    }
+
+    const current = currentMenuRoute.value
+    if (!current) {
+      return null
+    }
+
+    const pageId = current.pageId
+    const componentCache = cached[pageId]
+    if (componentCache && componentCache.component) {
+        return h(componentCache.component as DefineComponent,{ key: current.pageId })
+    }
+
+    const newComponent = markRaw(defineComponent({
+      name: pageId,
+      render: () => component,
+    }))
+    // FIX:切换路由缓存容器中组件可能不存在
+    if (!cached[pageId]) {
+      if (placeHolderComponent) {
+        return h(placeHolderComponent)
+      }
+      return null
+    }
+
+    cached[pageId].component = newComponent
+    return h(newComponent, { key: current.pageId })
+  }
+
+  function removeComponentCache(pageId: string) {
+    delete cached[pageId]
+  }
+
+  const RouteAlive = defineComponent({
+    props: {
+      is: {
+        type: Object,
+        require: true,
+      },
+      route: {
+        type: Object,
+        require: true,
+      },
+    },
+    setup(props) {
+      return () => h(KeepAlive, { include: toRaw(includes.value) },
+        { default: () => reDefineComponent(props.is as Component, props.route as RouteLocationNormalizedLoaded) })
+    },
+  })
+
+  return {
+    RouteAlive,
+    removeComponentCache,
   }
 }

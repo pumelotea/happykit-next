@@ -1,7 +1,7 @@
 /**
  * 框架接口
  */
-import { App, Ref } from 'vue'
+import { App, Component, Ref } from 'vue'
 import {
   NavigationFailure,
   NavigationGuardNext,
@@ -10,6 +10,7 @@ import {
   Router,
   RouteRecordRaw,
 } from 'vue-router'
+import { DefineComponent } from '@vue/runtime-core'
 
 export const HAPPYKIT_INJECT = 'HAPPYKIT_INJECT'
 export const HAPPYKIT_PARENT_ROUTE = 'HAPPYKIT_PARENT_ROUTE'
@@ -549,4 +550,20 @@ export declare interface HappyKitSecurity {
    * @param app
    */
   install(app: App): void
+}
+
+export declare interface HappyKitRouteCacheOption {
+  framework: HappyKitFramework
+  router: Router
+  placeHolderComponent?: Component | DefineComponent | null
+}
+
+export declare interface HappyKitRouteCache {
+  [prop: string]: HappyKitRouteCacheItem
+}
+
+export declare interface HappyKitRouteCacheItem {
+  pageId: string
+  isKeepalive: boolean
+  component?: Component | DefineComponent | null
 }
