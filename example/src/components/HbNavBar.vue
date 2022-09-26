@@ -66,6 +66,7 @@
 import { defineComponent, onMounted, ref, watch} from 'vue'
 import $happykit from '@/framework'
 import {useRouter} from "vue-router"
+import {removeComponentCache} from '@/router'
 
 export default defineComponent({
   name: 'HbNavBar',
@@ -104,10 +105,14 @@ export default defineComponent({
     const handleTabsEdit = (pageId: string, action: string) => {
       if ('remove' === action) {
         hkf.closeNav("self", pageId, (removedNavs: any, needNavs: any) => {
+          if (removedNavs.length > 0){
+            removedNavs.forEach((e:any)=>{
+              removeComponentCache(e.pageId)
+            })
+          }
           if (needNavs.length > 0) {
             $router.push(needNavs[0].to)
           }
-
           if (navList.value.length === 0) {
             $router.push('/')
           }
@@ -118,6 +123,11 @@ export default defineComponent({
     const closeTabs = (type: number) => {
       const tp: any = ['left', 'right', 'other', 'all', 'self']
       hkf.closeNav(tp[type], currentRouteMenu.value?.pageId, (removedNavs: any, needNavs: any) => {
+        if (removedNavs.length > 0){
+          removedNavs.forEach((e:any)=>{
+            removeComponentCache(e.pageId)
+          })
+        }
         if (needNavs.length > 0) {
           $router.push(needNavs[0].to)
         }

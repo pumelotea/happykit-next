@@ -1,7 +1,7 @@
 <template>
   <div v-highlight>
     <h2>浏览器指纹</h2>
-
+    <input>
     <h3>原理</h3>
     <p>
       指纹通过canvas进行计算得到，

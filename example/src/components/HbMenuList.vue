@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import HbMenuContent from './HbMenuContent.vue'
-import {computed, defineComponent, watch} from 'vue'
+import {computed, defineComponent} from 'vue'
 import $happykit from '@/framework'
 import {useRouter} from "vue-router";
 

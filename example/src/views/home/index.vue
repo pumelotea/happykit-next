@@ -12,117 +12,24 @@
           <hb-menu-list/>
         </template>
         <template v-slot:content>
-          <router-view v-slot="{ Component }">
-            <transition name="slide-fade">
-              <component
-                v-if="pageId"
-                :is="Component"
-                :pageId="pageId"
-                :isKeepalive="isKeepalive"
-                :key="pageId"></component>
-            </transition>
+          <router-view v-slot="{ Component,route }">
+            <route-alive :is='Component' :route='route'></route-alive>
+<!--            <keep-alive>-->
+<!--              <component-->
+<!--                :is="Component">-->
+<!--              </component>-->
+<!--            </keep-alive>-->
+<!--            <transition name="slide-fade">-->
+<!--              <component-->
+<!--                v-if="pageId"-->
+<!--                :is="Component"-->
+<!--                :pageId="pageId"-->
+<!--                :isKeepalive="isKeepalive"-->
+<!--                :key="pageId"></component>-->
+<!--            </transition>-->
           </router-view>
         </template>
       </hb-main-layout>
-    </div>
-    <div class="dev-form">
-      <div class="group-item">
-        <div class="group-name">初始化</div>
-        <div>
-          <el-button @click="loadData">加载数据</el-button>
-          <el-button>查看数据源</el-button>
-          <el-button @click="reset">重置框架</el-button>
-        </div>
-      </div>
-      <div class="group-item">
-        <div class="group-name">导航栏</div>
-        <div class="nav-c-box">
-          <div>
-            <el-button @click="closeTabs(3)">关闭导航栏-全部</el-button>
-          </div>
-          <div>
-            <el-button @click="closeTabs(0)">关闭导航栏-左侧</el-button>
-          </div>
-          <div>
-            <el-button @click="closeTabs(1)">关闭导航栏-右侧</el-button>
-          </div>
-          <div>
-            <el-button @click="closeTabs(2)">关闭导航栏-其他</el-button>
-          </div>
-          <div>
-            <el-button @click="closeTabs(4)">关闭导航栏-当前路由</el-button>
-          </div>
-          <div>
-            <el-button>跳转页面-普通</el-button>
-          </div>
-          <div>
-            <el-button>跳转页面-自定义标题</el-button>
-          </div>
-          <div>
-            <el-button>获取导航栏数据</el-button>
-          </div>
-          <div>
-            <el-button>获取面包屑</el-button>
-          </div>
-        </div>
-      </div>
-      <div class="group-item">
-        <div class="group-name">菜单</div>
-        <div class="nav-c-box">
-          <div>
-            <el-button>获取菜单数据</el-button>
-          </div>
-          <div>
-            <el-button>菜单点击事件</el-button>
-          </div>
-          <div>
-            <el-button>隐藏菜单（路由）</el-button>
-          </div>
-        </div>
-      </div>
-      <div class="group-item">
-        <div class="group-name">权限指令</div>
-        <div class="nav-c-box">
-          <div>
-            <el-button>按钮权限</el-button>
-          </div>
-        </div>
-      </div>
-      <div class="group-item">
-        <div class="group-name">指纹</div>
-        <div class="nav-c-box">
-          <div>
-            <el-button>获取浏览器指纹（canvas）</el-button>
-          </div>
-        </div>
-      </div>
-
-      <div class="group-item">
-        <div class="group-name">Security模块</div>
-        <div class="nav-c-box">
-          <div>
-            <el-button @click="login">登录</el-button>
-          </div>
-          <div>
-            <el-button @click="logout">登出</el-button>
-          </div>
-          <div>
-            <el-button @click="refreshToken">刷新token</el-button>
-          </div>
-          <div>
-            <el-button @click="getToken">获取token</el-button>
-          </div>
-          <div>
-            <el-button @click="refreshUser">刷新用户信息</el-button>
-          </div>
-          <div>
-            <el-button @click="getUserInfo">获取用户信息</el-button>
-          </div>
-          <div>
-            <el-button @click="flushStorage">清空模块存储</el-button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -134,13 +41,13 @@ import {defineComponent, ref, watch} from "vue"
 import $happykit from '@/framework'
 import {useRouter} from "vue-router"
 import {injectRoutes, createDefaultMenuAdapter, resetFramework, upgradeRouter,RouterInjectOption} from "happykit"
-
+import {RouteAlive} from '@/router'
 // @ts-ignore
 import routerData from '../../routerData'
 import happySecurity from "@/security";
 
 export default defineComponent({
-  components: {HbMainLayout, HbNavBar, HbMenuList},
+  components: {HbMainLayout, HbNavBar, HbMenuList,RouteAlive},
   setup() {
     const pageId = ref('')
     const isKeepalive = ref(false)

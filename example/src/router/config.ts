@@ -24,7 +24,7 @@ const beforeInterceptor = createDefaultRouterInterceptor({
   routerInjectOption:{
     parentRoute: {
       name: 'home',
-      path: '/home',
+      path: '/',
       component: () => import('@/views/home'!)
     },
     routes: [],
@@ -34,19 +34,12 @@ const beforeInterceptor = createDefaultRouterInterceptor({
   }
 })
 
-const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    component: () => import('@/App.vue'),
-    redirect: '/home',
-    children: []
-  }
-]
+const routes: RouteRecordRaw[] = []
 
 export const beforeEachHandler = (to: any, from: any, next: any) => {
   // 使用拦截器
-  // beforeInterceptor.filter(to,from,next)
-  next()
+  beforeInterceptor.filter(to,from,next)
+  // next()
 }
 
 // eslint-disable-next-line no-unused-vars
