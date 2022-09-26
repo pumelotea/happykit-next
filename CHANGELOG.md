@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/pumelotea/happykit-next/compare/v2.1.0...v2.2.0) (2022-09-26)
+
+
+### Features
+
+* 支持获取cache、includes ([d7f7185](https://github.com/pumelotea/happykit-next/commit/d7f7185e613b0865a0b3c2c52af60dcebac7cdd8))
+
 ## [2.1.0](https://github.com/pumelotea/happykit-next/compare/v2.0.1...v2.1.0) (2022-09-26)
 
 
