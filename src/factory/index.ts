@@ -485,6 +485,14 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
     delete cached[pageId]
   }
 
+  function getCached() {
+    return cached
+  }
+
+  function getIncludes() {
+    return includes
+  }
+
   const RouteAlive = defineComponent({
     props: {
       is: {
@@ -509,5 +517,7 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
   return {
     RouteAlive,
     removeComponentCache,
+    getCached,
+    getIncludes
   }
 }
