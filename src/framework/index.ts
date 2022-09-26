@@ -206,7 +206,7 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
         }
         case 'other': {
           const res: NavItem[] = []
-          let tmp:any = null
+          let tmp: any = null
           this.navigatorList.value.forEach((e) => {
             if (e.pageId !== this.currentMenuRoute.value?.pageId) {
               res.push(e)

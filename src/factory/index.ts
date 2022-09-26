@@ -11,15 +11,12 @@ import {
   RouterInjectOption,
   RouterInterceptor,
   RouterInterceptorOption,
-  TrackerIdFactory, HappyKitRouteCache, HappyKitRouteCacheOption,
+  TrackerIdFactory,
+  HappyKitRouteCache,
+  HappyKitRouteCacheOption,
 } from '../types'
 import { deepClone, getCanvasFingerPrint, uuid, getHash } from '../utils'
-import {
-  NavigationFailure,
-  RouteLocationNormalizedLoaded,
-  RouteLocationRaw,
-  Router,
-} from 'vue-router'
+import { NavigationFailure, RouteLocationNormalizedLoaded, RouteLocationRaw, Router } from 'vue-router'
 import { reactive, ref, watch, h, markRaw, defineComponent, KeepAlive, toRaw, Component, DefineComponent } from 'vue'
 
 /**
@@ -404,7 +401,6 @@ export function createDefaultRouterInterceptor(options: RouterInterceptorOption)
   }
 }
 
-
 export function useRouteAlive(options: HappyKitRouteCacheOption) {
   const framework = options.framework
   const router = options.router
@@ -429,11 +425,13 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
 
         includes.value = tmp
       })
-    }, {
+    },
+    {
       deep: true,
-    })
+    },
+  )
 
-  router.afterEach(to => {
+  router.afterEach((to) => {
     if (!currentMenuRoute.value) {
       return
     }
@@ -462,13 +460,15 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
     const pageId = current.pageId
     const componentCache = cached[pageId]
     if (componentCache && componentCache.component) {
-        return h(componentCache.component as DefineComponent,{ key: current.pageId })
+      return h(componentCache.component as DefineComponent, { key: current.pageId })
     }
 
-    const newComponent = markRaw(defineComponent({
-      name: pageId,
-      render: () => component,
-    }))
+    const newComponent = markRaw(
+      defineComponent({
+        name: pageId,
+        render: () => component,
+      }),
+    )
     // FIX:切换路由缓存容器中组件可能不存在
     if (!cached[pageId]) {
       if (placeHolderComponent) {
@@ -497,8 +497,12 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
       },
     },
     setup(props) {
-      return () => h(KeepAlive, { include: toRaw(includes.value) },
-        { default: () => reDefineComponent(props.is as Component, props.route as RouteLocationNormalizedLoaded) })
+      return () =>
+        h(
+          KeepAlive,
+          { include: toRaw(includes.value) },
+          { default: () => reDefineComponent(props.is as Component, props.route as RouteLocationNormalizedLoaded) },
+        )
     },
   })
 

@@ -139,9 +139,7 @@ export declare interface Adapter<T> {
  * 菜单数据适配器
  */
 export declare interface MenuAdapter<T> {
-  convert(
-    rawData: any,
-  ): {
+  convert(rawData: any): {
     routeMappingList: T[]
     menuTreeConverted: T[]
     menuIdMappingMap: Map<string, T>
