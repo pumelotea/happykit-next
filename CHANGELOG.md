@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/pumelotea/happykit-next/compare/v2.2.0...v2.2.1) (2022-09-28)
+
+
+### Bug Fixes
+
+* 修复路由首次切换页面逻辑bug ([55635a3](https://github.com/pumelotea/happykit-next/commit/55635a3e77dc2efdab866f3aaadc700932652f73))
+
 ## [2.2.0](https://github.com/pumelotea/happykit-next/compare/v2.1.0...v2.2.0) (2022-09-26)
 
 
