@@ -432,37 +432,35 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
   )
 
   router.afterEach((to) => {
+    // console.log('afterEach',0,to.fullPath,currentMenuRoute.value?.pageId)
     if (!currentMenuRoute.value) {
       return
     }
+    // console.log('afterEach',1,to.fullPath,currentMenuRoute.value?.pageId)
     const isKeepalive = to.meta.isKeepalive === true
     const pageId = currentMenuRoute.value?.pageId
     if (cached[pageId]) {
       return
     }
+    // console.log('afterEach',2,to.fullPath,currentMenuRoute.value?.pageId)
     cached[pageId] = {
       pageId,
       isKeepalive,
       component: null,
     }
+    // console.log('afterEach',3,to.fullPath,currentMenuRoute.value?.pageId)
   })
 
   function reDefineComponent(component: Component, route: RouteLocationNormalizedLoaded) {
-    if (!component) {
+    if (!currentMenuRoute.value){
       return null
     }
-
-    const current = currentMenuRoute.value
-    if (!current) {
-      return null
-    }
-
-    const pageId = current.pageId
+    const pageId = currentMenuRoute.value?.pageId
     const componentCache = cached[pageId]
     if (componentCache && componentCache.component) {
-      return h(componentCache.component as DefineComponent, { key: current.pageId })
+      return h(componentCache.component as DefineComponent, { key: pageId })
     }
-
+    // console.log('reDefineComponent',0,(component as any)?.type.__file,route.fullPath,currentMenuRoute.value?.pageId)
     const newComponent = markRaw(
       defineComponent({
         name: pageId,
@@ -476,9 +474,9 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
       }
       return null
     }
-
+    // console.log('reDefineComponent',1,(component as any)?.type.__file,route.fullPath,currentMenuRoute.value?.pageId)
     cached[pageId].component = newComponent
-    return h(newComponent, { key: current.pageId })
+    return h(newComponent, { key: pageId })
   }
 
   function removeComponentCache(pageId: string) {

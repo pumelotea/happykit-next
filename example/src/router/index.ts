@@ -3,6 +3,7 @@ import routes from '@/router/config'
 import { beforeEachHandler, afterEachHandler } from '@/router/config'
 import happyFramework from '@/framework'
 import { upgradeRouter, useRouteAlive } from 'happykit'
+import PlaceHolder from '@/views/PlaceHolder.vue'
 
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
@@ -18,7 +19,8 @@ router.afterEach(afterEachHandler)
 
 const {removeComponentCache, RouteAlive} = useRouteAlive({
   framework:happyFramework,
-  router
+  router,
+  placeHolderComponent:PlaceHolder
 })
 
 export {
