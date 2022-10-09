@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.3](https://github.com/pumelotea/happykit-next/compare/v2.2.2...v2.2.3) (2022-10-09)
+
+
+### Bug Fixes
+
+* v-point中获取happykit失败的问题（vue3.2.40版本开始） ([e63ad45](https://github.com/pumelotea/happykit-next/commit/e63ad452e1014ac18446d0a350880a2361f551bb))
+
 ### [2.2.2](https://github.com/pumelotea/happykit-next/compare/v2.2.1...v2.2.2) (2022-09-28)
 
 ### [2.2.1](https://github.com/pumelotea/happykit-next/compare/v2.2.0...v2.2.1) (2022-09-28)
