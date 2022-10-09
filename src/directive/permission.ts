@@ -9,7 +9,7 @@ const permission: Directive = {
   //
   // },
   mounted(el, binding) {
-    const instance = (binding.instance as any).$happykit as HappyKitFramework
+    const instance = binding.instance?.$.appContext.config.globalProperties.$happykit || (binding.instance as any).$happykit as HappyKitFramework
     if (!instance) {
       console.warn('HappyKitFramework not register permission directive')
       return
