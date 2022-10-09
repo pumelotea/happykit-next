@@ -6,7 +6,18 @@ const routerData = [
     isRouter: true,
     isKeepalive: true,
     type: 'menu',
-    children: []
+    children: [
+      {
+        name         : '新增',
+        permissionKey: 'add',
+        path         : '',
+        view         : '',
+        isRouter     : false,
+        isKeepalive  : false,
+        type         : 'point',
+        children     : []
+      },
+    ]
   },
   {
     name: '数据',
