@@ -187,7 +187,7 @@ export function createDefaultPageIdFactory(framework: HappyKitFramework): PageId
       return getHash(fullPath)
     },
     getNextPageId(to: RouteLocationRaw) {
-      const router: Router = this.framework.options.app?.config.globalProperties.$router
+      const router = this.framework.options.app?.config.globalProperties.$router
       if (!router) {
         throw Error('getNextPageId:router instance is null')
       }
@@ -431,14 +431,18 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
     },
   )
 
+  let activePageId = ''
+  let lastRedefinePageId = ''
+
   router.afterEach((to) => {
     // console.log('afterEach',0,to.fullPath,currentMenuRoute.value?.pageId)
-    if (!currentMenuRoute.value) {
+    activePageId = currentMenuRoute.value?.pageId || ''
+    if (!activePageId) {
       return
     }
     // console.log('afterEach',1,to.fullPath,currentMenuRoute.value?.pageId)
     const isKeepalive = to.meta.isKeepalive === true
-    const pageId = currentMenuRoute.value?.pageId
+    const pageId = currentMenuRoute.value?.pageId || ''
     if (cached[pageId]) {
       return
     }
@@ -452,15 +456,33 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
   })
 
   function reDefineComponent(component: Component, route: RouteLocationNormalizedLoaded) {
+    // console.log('start define 1' ,route.fullPath)
     if (!currentMenuRoute.value){
+      // console.log('start define 2' ,route.fullPath)
       return null
     }
+    // console.log('start define 3' ,route.fullPath)
     const pageId = currentMenuRoute.value?.pageId
+
+    // console.log('是否到达',currentMenuRoute.value?.pageId === activePageId)
+    //FIX 路由参数加载不正确
+    if (pageId !== activePageId){
+      if (placeHolderComponent) {
+        // console.log('start define 33' ,route.fullPath)
+        return h(placeHolderComponent)
+      }
+    }
+
+    // if (lastRedefinePageId === pageId){
+    //   return h(placeHolderComponent!)
+    // }
+
     const componentCache = cached[pageId]
     if (componentCache && componentCache.component) {
+      // console.log('start define 4' ,route.fullPath)
       return h(componentCache.component as DefineComponent, { key: pageId })
     }
-    // console.log('reDefineComponent',0,(component as any)?.type.__file,route.fullPath,currentMenuRoute.value?.pageId)
+    // console.log('start define 5' ,route.fullPath)
     const newComponent = markRaw(
       defineComponent({
         name: pageId,
@@ -468,13 +490,16 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
       }),
     )
     // FIX:切换路由缓存容器中组件可能不存在
-    if (!cached[pageId]) {
-      if (placeHolderComponent) {
-        return h(placeHolderComponent)
-      }
-      return null
-    }
-    // console.log('reDefineComponent',1,(component as any)?.type.__file,route.fullPath,currentMenuRoute.value?.pageId)
+    // if (!cached[pageId]) {
+    //   if (placeHolderComponent) {
+    //     console.log('start define 6' ,route.fullPath)
+    //     return h(placeHolderComponent)
+    //   }
+    //   console.log('start define 7' ,route.fullPath)
+    //   return null
+    // }
+    // console.log('start define 8' ,route.fullPath)
+    lastRedefinePageId = pageId
     cached[pageId].component = newComponent
     return h(newComponent, { key: pageId })
   }
