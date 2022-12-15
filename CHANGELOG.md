@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.4](https://github.com/pumelotea/happykit-next/compare/v2.2.3...v2.2.4) (2022-12-15)
+
+
+### Bug Fixes
+
+* RouterAlive 路由参数获取滞后的bug ([e122d61](https://github.com/pumelotea/happykit-next/commit/e122d6171925a0681721ce00f30144031fa49e3d))
+
 ### [2.2.3](https://github.com/pumelotea/happykit-next/compare/v2.2.2...v2.2.3) (2022-10-09)
 
 
