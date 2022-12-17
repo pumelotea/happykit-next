@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.5](https://github.com/pumelotea/happykit-next/compare/v2.2.4...v2.2.5) (2022-12-17)
+
 ### [2.2.4](https://github.com/pumelotea/happykit-next/compare/v2.2.3...v2.2.4) (2022-12-15)
 
 
