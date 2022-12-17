@@ -563,5 +563,5 @@ export declare interface HappyKitRouteCache {
 export declare interface HappyKitRouteCacheItem {
   pageId: string
   isKeepalive: boolean
-  component?: Component | DefineComponent | null
+  component: Component | DefineComponent
 }

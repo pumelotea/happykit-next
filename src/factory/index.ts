@@ -1,23 +1,32 @@
 import {
   HAPPYKIT_INJECT,
-  HAPPYKIT_STORAGE,
-  NAV_TITLE,
   HAPPYKIT_PARENT_ROUTE,
+  HAPPYKIT_STORAGE,
   HappyKitFramework,
+  HappyKitRouteCache,
+  HappyKitRouteCacheOption,
   HappyKitRouter,
   MenuAdapter,
   MenuItem,
+  NAV_TITLE, NavItem,
   PageIdFactory,
   RouterInjectOption,
   RouterInterceptor,
   RouterInterceptorOption,
   TrackerIdFactory,
-  HappyKitRouteCache,
-  HappyKitRouteCacheOption,
 } from '../types'
-import { deepClone, getCanvasFingerPrint, uuid, getHash } from '../utils'
+import { deepClone, getCanvasFingerPrint, getHash, uuid } from '../utils'
 import { NavigationFailure, RouteLocationNormalizedLoaded, RouteLocationRaw, Router } from 'vue-router'
-import { reactive, ref, watch, h, markRaw, defineComponent, KeepAlive, toRaw, Component, DefineComponent } from 'vue'
+import {
+  Component,
+  computed,
+  defineComponent,
+  h,
+  KeepAlive,
+  markRaw,
+  reactive,
+  ref
+} from 'vue'
 
 /**
  * 工厂
@@ -411,38 +420,30 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
   const cached = reactive<HappyKitRouteCache>({})
   const includes = ref<string[]>([])
   // when tabs changed, calc the includes
-  watch(
-    () => cached,
-    () => {
-      // delay update, because of current component's onUnmounted callback
-      requestIdleCallback(() => {
-        const tmp: string[] = []
-        for (let cachedKey in cached) {
-          if (cached[cachedKey].isKeepalive) {
-            tmp.push(cachedKey)
-          }
-        }
-
-        includes.value = tmp
-      })
-    },
-    {
-      deep: true,
-    },
-  )
+  const includesCompute = computed(()=>{
+    const tmp: string[] = []
+    for (let cachedKey in cached) {
+      if (cached[cachedKey].isKeepalive) {
+        tmp.push(cachedKey)
+      }
+    }
+    return tmp
+  })
 
   let activePageId = ''
-  let lastRedefinePageId = ''
+  let activePage:NavItem | null
 
   router.afterEach((to) => {
     // console.log('afterEach',0,to.fullPath,currentMenuRoute.value?.pageId)
     activePageId = currentMenuRoute.value?.pageId || ''
+    activePage = currentMenuRoute.value
     if (!activePageId) {
       return
     }
     // console.log('afterEach',1,to.fullPath,currentMenuRoute.value?.pageId)
     const isKeepalive = to.meta.isKeepalive === true
     const pageId = currentMenuRoute.value?.pageId || ''
+
     if (cached[pageId]) {
       return
     }
@@ -450,58 +451,58 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
     cached[pageId] = {
       pageId,
       isKeepalive,
-      component: null,
+      component: markRaw(defineComponent({
+        name:pageId,
+        ...pageComponent
+      }))
     }
     // console.log('afterEach',3,to.fullPath,currentMenuRoute.value?.pageId)
   })
 
+  const pageComponent = {
+    props: {
+      is: {
+        type: Object,
+      }
+    },
+    data(){
+      return {
+        load:false
+      }
+    },
+    render(vm){
+      if (vm.load){
+        if (vm.is){
+          return h(vm.is)
+        }
+      }
+      requestIdleCallback(()=>{
+        vm.load = true
+      })
+      if (placeHolderComponent){
+        return h(placeHolderComponent)
+      }
+      return null
+    },
+  }
+
   function reDefineComponent(component: Component, route: RouteLocationNormalizedLoaded) {
     // console.log('start define 1' ,route.fullPath)
-    if (!currentMenuRoute.value){
+    if (!activePage){
       // console.log('start define 2' ,route.fullPath)
       return null
     }
     // console.log('start define 3' ,route.fullPath)
-    const pageId = currentMenuRoute.value?.pageId
-
-    // console.log('是否到达',currentMenuRoute.value?.pageId === activePageId)
-    //FIX 路由参数加载不正确
-    if (pageId !== activePageId){
-      if (placeHolderComponent) {
-        // console.log('start define 33' ,route.fullPath)
-        return h(placeHolderComponent)
-      }
-    }
-
-    // if (lastRedefinePageId === pageId){
-    //   return h(placeHolderComponent!)
-    // }
+    const pageId = activePage.pageId
 
     const componentCache = cached[pageId]
-    if (componentCache && componentCache.component) {
+    if (componentCache) {
       // console.log('start define 4' ,route.fullPath)
-      return h(componentCache.component as DefineComponent, { key: pageId })
+      return h(componentCache.component, { key: pageId, is:component})
     }
-    // console.log('start define 5' ,route.fullPath)
-    const newComponent = markRaw(
-      defineComponent({
-        name: pageId,
-        render: () => component,
-      }),
-    )
-    // FIX:切换路由缓存容器中组件可能不存在
-    // if (!cached[pageId]) {
-    //   if (placeHolderComponent) {
-    //     console.log('start define 6' ,route.fullPath)
-    //     return h(placeHolderComponent)
-    //   }
-    //   console.log('start define 7' ,route.fullPath)
-    //   return null
-    // }
-    // console.log('start define 8' ,route.fullPath)
-    lastRedefinePageId = pageId
-    cached[pageId].component = newComponent
-    return h(newComponent, { key: pageId })
+
+    // console.log('start define 5' ,route.fullPath,componentCache)
+    return null
   }
 
   function removeComponentCache(pageId: string) {
@@ -528,12 +529,13 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
       },
     },
     setup(props) {
-      return () =>
-        h(
+      return () =>{
+        return h(
           KeepAlive,
-          { include: toRaw(includes.value) },
+          { include: includesCompute.value },
           { default: () => reDefineComponent(props.is as Component, props.route as RouteLocationNormalizedLoaded) },
         )
+      }
     },
   })
 
