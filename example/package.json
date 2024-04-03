@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode dev --dest=dist-dev",
+    "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve --mode dev --dest=dist-dev",
     "build": "vue-cli-service build --mode prod --dest=dist-prod",
     "lint": "vue-cli-service lint",
     "build-prod": "vue-cli-service build --mode prod --dest=dist-prod",

@@ -22,7 +22,7 @@ test('default storage engine', () => {
 
 test('json parse error from storage', () => {
   const instance = createHappySecurity()
-  const keyUser = `${HAPPYKIT_STORAGE}/${SECURITY_USER}`
+  const keyUser = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_USER}`
   localStorage.setItem(keyUser, 'error')
 
   expect(() => {
@@ -46,8 +46,8 @@ describe('base on localStorage engine', () => {
     localStorage.clear()
     const instance = createHappySecurity()
     // 准备数据
-    const keyToken = `${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`
-    const keyUser = `${HAPPYKIT_STORAGE}/${SECURITY_USER}`
+    const keyToken = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_TOKEN}`
+    const keyUser = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_USER}`
     localStorage.setItem(keyToken, 'token')
     const user = {
       username: 'username',
@@ -82,8 +82,8 @@ describe('base on localStorage engine', () => {
     expect(instance.getToken()).toBe('token2')
     expect(instance.getUser().value).toStrictEqual(user2)
 
-    const keyToken = `${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`
-    const keyUser = `${HAPPYKIT_STORAGE}/${SECURITY_USER}`
+    const keyToken = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_TOKEN}`
+    const keyUser = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_USER}`
     expect(localStorage.getItem(keyToken)).toBe('token2')
     expect(localStorage.getItem(keyUser)).toBe('{"username":"username2","email":"test@test.com2"}')
 
@@ -100,7 +100,7 @@ describe('base on localStorage engine', () => {
     instance.refreshToken('token3')
     expect(instance.getToken()).toBe('token3')
 
-    const keyToken = `${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`
+    const keyToken = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_TOKEN}`
     expect(localStorage.getItem(keyToken)).toBe('token3')
   })
 
@@ -114,7 +114,7 @@ describe('base on localStorage engine', () => {
     instance.refreshUser(user3)
     expect(instance.getUser().value).toStrictEqual(user3)
 
-    const keyUser = `${HAPPYKIT_STORAGE}/${SECURITY_USER}`
+    const keyUser = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_USER}`
     expect(localStorage.getItem(keyUser)).toBe('{"username":"username3","email":"test@test.com3"}')
   })
 })
@@ -139,8 +139,8 @@ describe('base on sessionStorage engine', () => {
       storageEngine: 'session_storage',
     })
     // 准备数据
-    const keyToken = `${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`
-    const keyUser = `${HAPPYKIT_STORAGE}/${SECURITY_USER}`
+    const keyToken = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_TOKEN}`
+    const keyUser = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_USER}`
     sessionStorage.setItem(keyToken, 'token')
     const user = {
       username: 'username',
@@ -177,8 +177,8 @@ describe('base on sessionStorage engine', () => {
     expect(instance.getToken()).toBe('token2')
     expect(instance.getUser().value).toStrictEqual(user2)
 
-    const keyToken = `${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`
-    const keyUser = `${HAPPYKIT_STORAGE}/${SECURITY_USER}`
+    const keyToken = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_TOKEN}`
+    const keyUser = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_USER}`
     expect(sessionStorage.getItem(keyToken)).toBe('token2')
     expect(sessionStorage.getItem(keyUser)).toBe('{"username":"username2","email":"test@test.com2"}')
 
@@ -197,7 +197,7 @@ describe('base on sessionStorage engine', () => {
     instance.refreshToken('token3')
     expect(instance.getToken()).toBe('token3')
 
-    const keyToken = `${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`
+    const keyToken = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_TOKEN}`
     expect(sessionStorage.getItem(keyToken)).toBe('token3')
   })
 
@@ -213,7 +213,7 @@ describe('base on sessionStorage engine', () => {
     instance.refreshUser(user3)
     expect(instance.getUser().value).toStrictEqual(user3)
 
-    const keyUser = `${HAPPYKIT_STORAGE}/${SECURITY_USER}`
+    const keyUser = `${HAPPYKIT_STORAGE}/DEFAULT/${SECURITY_USER}`
     expect(sessionStorage.getItem(keyUser)).toBe('{"username":"username3","email":"test@test.com3"}')
   })
 })

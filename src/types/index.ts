@@ -191,7 +191,7 @@ export declare interface HappyKitFrameworkOption {
   trackerIdFactory?: TrackerIdFactory
   permissionDirectiveName?: string
   autoRegisterDirective?: boolean
-
+  namespace?: string
   [propName: string]: any
 }
 
@@ -212,6 +212,10 @@ export declare interface HappyKitFramework {
    * 初始化属性
    */
   options: HappyKitFrameworkOption
+  /**
+   * 命名空间
+   */
+  namespace: string
   /**
    * 菜单树
    */
@@ -464,6 +468,10 @@ export declare interface HappyKitSecurityOption {
    * 存储引擎
    */
   storageEngine?: StorageEngine
+  /**
+   * 命名空间
+   */
+  namespace?: string
 }
 
 /**

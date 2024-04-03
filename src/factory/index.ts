@@ -322,7 +322,7 @@ export function upgradeRouter(framework: HappyKitFramework, router: Router): Hap
         if (!nextPageId) {
           throw Error('pageIdFactory is undefined')
         }
-        localStorage.setItem(`${HAPPYKIT_STORAGE}/${NAV_TITLE}/${nextPageId}`, title)
+        localStorage.setItem(`${HAPPYKIT_STORAGE}/${framework.namespace}/${NAV_TITLE}/${nextPageId}`, title)
       }
       return router.push(to)
     },

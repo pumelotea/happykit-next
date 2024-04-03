@@ -60,24 +60,27 @@ export function createHappySecurity(options?: HappyKitSecurityOption): HappyKitS
       }
     },
     loadFromStorage() {
-      this.token = this.getStorage().getItem(`${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`) || ''
-      const userJSONString = this.getStorage().getItem(`${HAPPYKIT_STORAGE}/${SECURITY_USER}`)
+      const namespace = this.options.namespace || 'DEFAULT'
+      this.token = this.getStorage().getItem(`${HAPPYKIT_STORAGE}/${namespace}/${SECURITY_TOKEN}`) || ''
+      const userJSONString = this.getStorage().getItem(`${HAPPYKIT_STORAGE}/${namespace}/${SECURITY_USER}`)
       if (userJSONString) {
         const JSONObject = JSON.parse(userJSONString)
         this.user.value = JSONObject as User
       }
     },
     saveIntoStorage() {
+      const namespace = this.options.namespace || 'DEFAULT'
       if (this.token) {
-        this.getStorage().setItem(`${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`, this.token)
+        this.getStorage().setItem(`${HAPPYKIT_STORAGE}/${namespace}/${SECURITY_TOKEN}`, this.token)
       }
       if (this.user.value) {
-        this.getStorage().setItem(`${HAPPYKIT_STORAGE}/${SECURITY_USER}`, JSON.stringify(this.user.value))
+        this.getStorage().setItem(`${HAPPYKIT_STORAGE}/${namespace}/${SECURITY_USER}`, JSON.stringify(this.user.value))
       }
     },
     flushStorage() {
-      this.getStorage().removeItem(`${HAPPYKIT_STORAGE}/${SECURITY_TOKEN}`)
-      this.getStorage().removeItem(`${HAPPYKIT_STORAGE}/${SECURITY_USER}`)
+      const namespace = this.options.namespace || 'DEFAULT'
+      this.getStorage().removeItem(`${HAPPYKIT_STORAGE}/${namespace}/${SECURITY_TOKEN}`)
+      this.getStorage().removeItem(`${HAPPYKIT_STORAGE}/${namespace}/${SECURITY_USER}`)
     },
   }
   security.init(options)

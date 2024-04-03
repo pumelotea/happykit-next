@@ -35,4 +35,3 @@ app.directive('highlight', (el:any) => {
 app.use(happyFramework)
 app.use(happySecurity)
 app.mount('#app')
-

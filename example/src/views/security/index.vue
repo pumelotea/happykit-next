@@ -16,7 +16,7 @@ import {defineComponent, ref} from "vue"
 
 export default defineComponent({
   setup(){
-
+    happySecurity.signIn("token-1111", {})
     const user = happySecurity.getUser()
     const token = ref(happySecurity.getToken())
     function getToken(){

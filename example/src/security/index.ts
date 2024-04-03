@@ -1,5 +1,7 @@
 import {createHappySecurity} from "happykit";
 
-const happySecurity = createHappySecurity()
+const happySecurity = createHappySecurity({
+  namespace: 'XXXX'
+})
 
 export default happySecurity

@@ -21,10 +21,11 @@ import permission from '../directive/permission'
 /**
  * 清除缓存中的导航项名称
  * @param navList
+ * @param namespace
  */
-const clearNavTitleLocalStorage = (navList: NavItem[]) => {
+const clearNavTitleLocalStorage = (navList: NavItem[], namespace='DEFAULT') => {
   navList.forEach((e) => {
-    localStorage.removeItem(`${HAPPYKIT_STORAGE}/${NAV_TITLE}/${e.pageId}`)
+    localStorage.removeItem(`${HAPPYKIT_STORAGE}/${namespace}/${NAV_TITLE}/${e.pageId}`)
   })
 }
 
@@ -35,6 +36,7 @@ const clearNavTitleLocalStorage = (navList: NavItem[]) => {
 export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKitFramework {
   const frameworkInstance: HappyKitFramework = {
     options: {},
+    namespace: 'DEFAULT',
     menuTree: ref([]),
     navigatorList: ref([]),
     routeMappingList: ref([]),
@@ -61,6 +63,7 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
       Object.keys(opts || {}).forEach((key) => {
         this.options[key] = opts![key]
       })
+      this.namespace = this.options.namespace || 'DEFAULT'
       this.initTracker()
     },
     setMenuTree(rawData: any, dataAdapter?: MenuAdapter<MenuItem>) {
@@ -141,7 +144,7 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
       }
 
       // 读取缓存中的对应标题
-      const cacheTitle = localStorage.getItem(`${HAPPYKIT_STORAGE}/${NAV_TITLE}/${nextPageId}`)
+      const cacheTitle = localStorage.getItem(`${HAPPYKIT_STORAGE}/${this.namespace}/${NAV_TITLE}/${nextPageId}`)
 
       const newNav = {
         pageId: nextPageId,
@@ -153,7 +156,7 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
       this.navigatorList.value.push(newNav)
 
       // 持久化页面对应的标题
-      localStorage.setItem(`${HAPPYKIT_STORAGE}/${NAV_TITLE}/${newNav.pageId}`, newNav.title)
+      localStorage.setItem(`${HAPPYKIT_STORAGE}/${this.namespace}/${NAV_TITLE}/${newNav.pageId}`, newNav.title)
 
       return newNav
     },
@@ -180,7 +183,7 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
               this.setCurrentMenuRoute(preNav)
             }
           }
-          clearNavTitleLocalStorage(res)
+          clearNavTitleLocalStorage(res, this.namespace)
           event?.(res, needNavs)
           break
         }
@@ -190,7 +193,7 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
             return
           }
           const res = this.navigatorList.value.splice(0, pos)
-          clearNavTitleLocalStorage(res)
+          clearNavTitleLocalStorage(res, this.namespace)
           event?.(res, [])
           break
         }
@@ -200,7 +203,7 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
             return
           }
           const res = this.navigatorList.value.splice(pos + 1, this.navigatorList.value.length - pos)
-          clearNavTitleLocalStorage(res)
+          clearNavTitleLocalStorage(res, this.namespace)
           event?.(res, [])
           break
         }
@@ -217,14 +220,14 @@ export function createHappyFramework(options?: HappyKitFrameworkOption): HappyKi
           if (tmp) {
             this.navigatorList.value = [tmp as NavItem]
           }
-          clearNavTitleLocalStorage(res)
+          clearNavTitleLocalStorage(res, this.namespace)
           event?.(res, [])
           break
         }
         case 'all': {
           const res = [...this.navigatorList.value]
           this.navigatorList.value = []
-          clearNavTitleLocalStorage(res)
+          clearNavTitleLocalStorage(res, this.namespace)
           event?.(res, [])
           break
         }
