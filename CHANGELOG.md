@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/pumelotea/happykit-next/compare/v2.2.5...v2.3.0) (2024-04-03)
+
+
+### Features
+
+* 支持存储命名空间 ([63e40eb](https://github.com/pumelotea/happykit-next/commit/63e40eb6dd2e53ceba7f1deb52ee24f459184bc3))
+
 ### [2.2.5](https://github.com/pumelotea/happykit-next/compare/v2.2.4...v2.2.5) (2022-12-17)
 
 ### [2.2.4](https://github.com/pumelotea/happykit-next/compare/v2.2.3...v2.2.4) (2022-12-15)
