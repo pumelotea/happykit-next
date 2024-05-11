@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/pumelotea/happykit-next/compare/v2.3.0...v2.4.0) (2024-05-11)
+
+
+### Features
+
+* window.requestIdleCallback兼容处理 ([2b5be00](https://github.com/pumelotea/happykit-next/commit/2b5be003c9aac9198de2fd5a01ee1386c2da32a9))
+
 ## [2.3.0](https://github.com/pumelotea/happykit-next/compare/v2.2.5...v2.3.0) (2024-04-03)
 
 
