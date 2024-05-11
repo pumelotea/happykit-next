@@ -476,7 +476,19 @@ export function useRouteAlive(options: HappyKitRouteCacheOption) {
           return h(vm.is)
         }
       }
-      requestIdleCallback(()=>{
+      window.requestIdleCallback = window.requestIdleCallback || function(handler) {
+        let startTime = Date.now();
+
+        return setTimeout(function() {
+          handler({
+            didTimeout: false,
+            timeRemaining: function() {
+              return Math.max(0, 50.0 - (Date.now() - startTime));
+            }
+          });
+        }, 1);
+      }
+      window.requestIdleCallback(()=>{
         vm.load = true
       })
       if (placeHolderComponent){
